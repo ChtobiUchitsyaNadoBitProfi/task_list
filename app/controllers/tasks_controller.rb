@@ -1,11 +1,11 @@
+# frozen_string_literal: true
+
 class TasksController < ApplicationController
   # skip_before_action :verify_authenticity_token
   before_action :find_task, only: %i[show edit update destroy]
 
   def index
-    if user_signed_in?
-      @tasks = Task.where(user_id: current_user.id).order(:id)
-    end
+    @tasks = Task.where(user_id: current_user.id).order(:id) if user_signed_in?
   end
 
   def create
