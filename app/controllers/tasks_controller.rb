@@ -3,11 +3,14 @@ class TasksController < ApplicationController
   before_action :find_task, only: %i[show edit update destroy]
 
   def index
-    @tasks = Task.all.order(:id)
+    if user_signed_in?
+      @tasks = Task.where(user_id: current_user.id).order(:id)
+    end
   end
 
   def create
     @task = Task.new(tasks_params)
+    @task.user_id = current_user.id
     if @task.save
       redirect_to @task
     else
@@ -40,7 +43,7 @@ class TasksController < ApplicationController
   private
 
   def tasks_params
-    params.require(:task).permit(:text)
+    params.require(:task).permit(:text, :user_id)
   end
 
   def find_task
