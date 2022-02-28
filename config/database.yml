@@ -6,7 +6,7 @@ default: &default
   password: postgres
   host: localhost
 
-  development:
+development:
   <<: *default
   database: tasklist_development
 
